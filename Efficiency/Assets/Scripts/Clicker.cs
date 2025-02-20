@@ -1,11 +1,17 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using CodeMonkey.Utils;
 
 public class Clicker : MonoBehaviour
 {
     public UIManager uiManager;
 
     public int totalNodePoints;
+
+    public GameObject nodePrefab;
+
+    private Vector2 startPoint;
+    private Vector2 endPoint;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,6 +22,7 @@ public class Clicker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -28,5 +35,17 @@ public class Clicker : MonoBehaviour
 
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        Vector2.Lerp(startPoint, endPoint, Time.deltaTime);
+
+        if (Input.anyKeyDown)
+        {
+            Instantiate(nodePrefab, new Vector2(0.5f,0.5f), Quaternion.identity);
+        }
+
+        UtilsClass.CreateWorldText();
     }
 }
