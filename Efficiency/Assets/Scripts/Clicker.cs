@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using CodeMonkey.Utils;
 
 public class Clicker : MonoBehaviour
 {
@@ -45,7 +44,5 @@ public class Clicker : MonoBehaviour
         {
             Instantiate(nodePrefab, new Vector2(0.5f,0.5f), Quaternion.identity);
         }
-
-        UtilsClass.CreateWorldText();
     }
 }
