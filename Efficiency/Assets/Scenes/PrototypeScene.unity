@@ -893,6 +893,9 @@ GameObject:
   - component: {fileID: 856994533}
   - component: {fileID: 856994532}
   - component: {fileID: 856994534}
+  - component: {fileID: 856994536}
+  - component: {fileID: 856994535}
+  - component: {fileID: 856994537}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -956,6 +959,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc03f204a92ef841baacf8a38cb9def, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathfindingDebugStepVisual: {fileID: 856994536}
+  pathfindingVisual: {fileID: 856994535}
+--- !u!114 &856994535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856994530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26464f9fd1296e4797d678764847afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &856994536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856994530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3581ab854c6fbc44fb16fcca768c54ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pfPathfindingDebugStepVisualNode: {fileID: 6536783764682816104, guid: 137cc74e80adc6648a54b841982d1a8e, type: 3}
+--- !u!33 &856994537
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856994530}
+  m_Mesh: {fileID: 0}
 --- !u!1001 &1020194154
 PrefabInstance:
   m_ObjectHideFlags: 0
