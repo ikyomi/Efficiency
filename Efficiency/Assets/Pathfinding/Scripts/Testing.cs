@@ -19,14 +19,14 @@ using CodeMonkey;
 public class Testing : MonoBehaviour {
     
     [SerializeField] private PathfindingDebugStepVisual pathfindingDebugStepVisual;
-    [SerializeField] private PathfindingVisual pathfindingVisual;
+    //[SerializeField] private PathfindingVisual pathfindingVisual;
     [SerializeField] private CharacterPathfindingMovementHandler characterPathfinding;
     private Pathfinding pathfinding;
 
     private void Start() {
         pathfinding = new Pathfinding(20, 10);
         pathfindingDebugStepVisual.Setup(pathfinding.GetGrid());
-        pathfindingVisual.SetGrid(pathfinding.GetGrid());
+        //pathfindingVisual.SetGrid(pathfinding.GetGrid());
     }
 
     private void Update() {
