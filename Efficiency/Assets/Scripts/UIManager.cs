@@ -1,11 +1,16 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public Clicker clicker;
+    //public Clicker clicker;
+    public GameManager gameManager;
 
-    public TMP_Text nodePointCounter;
+    public TMP_Text nodePointText;
+    public TMP_Text moneyText;
+
+    public Button nodePointsToMoneyConversionButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,6 +21,9 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        nodePointCounter.text = clicker.totalNodePoints.ToString();
+        nodePointText.text = gameManager.totalNodePoints.ToString();
+        moneyText.text = "$" + gameManager.totalMoney.ToString();
+
+
     }
 }
