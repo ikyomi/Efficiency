@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Clicker : MonoBehaviour
 {
+    public PlacedObjectTypeSO placedObjectTypeSO;
     public UIManager uiManager;
     public GameManager gameManager;
     public Grid<int> grid;
@@ -33,9 +35,11 @@ public class Clicker : MonoBehaviour
         grid.TriggerGridObjectChanged(x, y);
     }
 
-    public bool CanBuild()
+    public bool CanBuild(int x, int y)
     {
-        return nodePrefab == null;
+
+        int nodePrefab = grid.GetGridObject(x, y);
+        return nodePrefab == 0;
     }
 
     public override string ToString()
@@ -67,11 +71,19 @@ public class Clicker : MonoBehaviour
 
             //Debug.Log("x: " + x + ",y: " + y);
 
-            //nodePrefab = grid.GetGridObject(x, y);
-            if (CanBuild())
+            List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(new Vector2Int(x, y), PlacedObjectTypeSO.Dir.Down);
+            
+            if (CanBuild(x,  y))
             {
                 GameObject builtNode = Instantiate(nodePrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
+
+                foreach (Vector2Int gridPosition in gridPositionList)
+                {
+                    grid.SetGridObject(gridPosition.x, gridPosition.y, 1); 
+                }
                 SetPrefab(builtNode);
+                grid.SetGridObject(x, y, 1);
+
             }
             else
             {
