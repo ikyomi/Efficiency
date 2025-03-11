@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public void Conversion()
     {
         totalMoney += totalNodePoints;
-        Debug.Log("nodes converted, " + "money: $" + totalMoney);
+        Debug.Log("nodes converted:" + totalNodePoints + " , " + "money: $" + totalMoney);
         totalNodePoints = 0;
     }
 }

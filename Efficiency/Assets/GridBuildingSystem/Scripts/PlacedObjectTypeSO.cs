@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class PlacedObjectTypeSO : ScriptableObject {
-
-    public static Dir GetNextDir(Dir dir) {
-        switch (dir) {
+public class PlacedObjectTypeSO : ScriptableObject
+{
+    public static Dir GetNextDir(Dir dir)
+    {
+        switch (dir)
+        {
             default:
-            case Dir.Down:      return Dir.Left;
-            case Dir.Left:      return Dir.Up;
-            case Dir.Up:        return Dir.Right;
-            case Dir.Right:     return Dir.Down;
+            case Dir.Down: return Dir.Left;
+            case Dir.Left: return Dir.Up;
+            case Dir.Up: return Dir.Right;
+            case Dir.Right: return Dir.Down;
         }
     }
 
-    public enum Dir {
+    public enum Dir
+    {
         Down,
         Left,
         Up,
@@ -28,43 +31,55 @@ public class PlacedObjectTypeSO : ScriptableObject {
     public int width;
     public int height;
 
-
-    public int GetRotationAngle(Dir dir) {
-        switch (dir) {
+    // Return the rotation angle in Z-axis
+    public int GetRotationAngle(Dir dir)
+    {
+        switch (dir)
+        {
             default:
-            case Dir.Down:  return 0;
-            case Dir.Left:  return 90;
-            case Dir.Up:    return 180;
-            case Dir.Right: return 270;
+            case Dir.Down: return 0;     // Facing down (Z rotation 0 degrees)
+            case Dir.Left: return 90;    // Facing left (Z rotation 90 degrees)
+            case Dir.Up: return 180;    // Facing up (Z rotation 180 degrees)
+            case Dir.Right: return 270;  // Facing right (Z rotation 270 degrees)
         }
     }
 
-    public Vector2Int GetRotationOffset(Dir dir) {
-        switch (dir) {
+    // Return the rotation offset in world space based on the current direction
+    public Vector2Int GetRotationOffset(Dir dir)
+    {
+        switch (dir)
+        {
             default:
-            case Dir.Down:  return new Vector2Int(0, 0);
-            case Dir.Left:  return new Vector2Int(0, width);
-            case Dir.Up:    return new Vector2Int(width, height);
-            case Dir.Right: return new Vector2Int(height, 0);
+            case Dir.Down: return new Vector2Int(0, 0);        // No offset for Down
+            case Dir.Left: return new Vector2Int(0, width);     // Offset to the right for Left
+            case Dir.Up: return new Vector2Int(width, height); // Offset for Up (Width and Height)
+            case Dir.Right: return new Vector2Int(height, 0);    // Offset for Right
         }
     }
 
-    public List<Vector2Int> GetGridPositionList(Vector2Int offset, Dir dir) {
+    // Returns the grid positions for the object in the grid layout
+    public List<Vector2Int> GetGridPositionList(Vector2Int offset, Dir dir)
+    {
         List<Vector2Int> gridPositionList = new List<Vector2Int>();
-        switch (dir) {
+        switch (dir)
+        {
             default:
             case Dir.Down:
             case Dir.Up:
-                for (int x = 0; x < width; x++) {
-                    for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
                         gridPositionList.Add(offset + new Vector2Int(x, y));
                     }
                 }
                 break;
             case Dir.Left:
             case Dir.Right:
-                for (int x = 0; x < height; x++) {
-                    for (int y = 0; y < width; y++) {
+                for (int x = 0; x < height; x++)
+                {
+                    for (int y = 0; y < width; y++)
+                    {
                         gridPositionList.Add(offset + new Vector2Int(x, y));
                     }
                 }
@@ -72,5 +87,4 @@ public class PlacedObjectTypeSO : ScriptableObject {
         }
         return gridPositionList;
     }
-
 }

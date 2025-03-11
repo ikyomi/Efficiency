@@ -50,7 +50,7 @@ public class Grid<TGridObject> {
 
             for (int x = 0; x < gridArray.GetLength(0); x++) {
                 for (int y = 0; y < gridArray.GetLength(1); y++) {
-                    debugTextArray[x, y] = UtilsClass.CreateWorldText(x + ", " + y.ToString(), null, GetWorldPosition(x, y) + new Vector2(cellSize, cellSize) * .5f, 15, Color.white, TextAnchor.MiddleCenter);
+                    debugTextArray[x, y] = UtilsClass.CreateWorldText(x + ", " + y.ToString(), null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 15, Color.white, TextAnchor.MiddleCenter);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
                     Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
                 }
@@ -76,7 +76,7 @@ public class Grid<TGridObject> {
         return cellSize;
     }
 
-    public Vector2 GetWorldPosition(int x, int y) {
+    public Vector3 GetWorldPosition(int x, int y) {
         return new Vector2(x, y) * cellSize + originPosition;
     }
 
