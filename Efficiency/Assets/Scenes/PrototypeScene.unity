@@ -1009,10 +1009,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c09a6f962c05541489f6087c800e1e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placedObjectTypeSO: {fileID: 11400000, guid: 63e2ef1064cdf404583c18f08a6169f6, type: 2}
+  placedObjectTypeSO: {fileID: 11400000, guid: 3afcc66d75bc5c74a9b9386aa4499dba, type: 2}
   uiManager: {fileID: 856994532}
   gameManager: {fileID: 856994535}
-  nodePrefab: {fileID: 282798714269989285, guid: d47f8bcbf0d6fd84682f96cedd99f29e, type: 3}
+  nodePrefab: {fileID: 282798714269989285, guid: ac9839fd469987947b89c900fecae1b7, type: 3}
   x: 0
   y: 0
 --- !u!114 &856994535

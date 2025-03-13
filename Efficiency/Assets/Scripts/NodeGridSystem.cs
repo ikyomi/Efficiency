@@ -80,7 +80,6 @@ public class NodeGridSystem : MonoBehaviour
             if (canBuild) // If we can build
             {
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
-                // Add offset for the second and third rotations
 
                 if (dir == PlacedObjectTypeSO.Dir.Left)
                 {
