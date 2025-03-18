@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Node
+  - StartConveyor
+  - EndConveyor
   layers:
   - Default
   - TransparentFX

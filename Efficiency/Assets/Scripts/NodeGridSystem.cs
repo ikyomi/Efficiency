@@ -48,19 +48,34 @@ public class NodeGridSystem : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) // Clicker mechanic for nodes
-        {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            if (hit.collider != null && hit.collider.CompareTag("Node"))
+        // Right-Click for Clicker Mechanic
+        if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+        {
+            grid.GetXY(mousePos, out int x, out int y);
+
+            RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+            if (hit.collider != null)
             {
-                Debug.Log("Node clicked");
-                gameManager.totalNodePoints++;
+                GameObject hitObject = hit.collider.gameObject;
+                Debug.Log($"Raycast hit: {hitObject.name}");
+
+                // Check if we hit a node or its child
+                if (hitObject.CompareTag("Node") || (hitObject.transform.parent != null && hitObject.transform.parent.CompareTag("Node")))
+                {
+                    Debug.Log("Node clicked! Points awarded.");
+                    gameManager.totalNodePoints++;
+                }
+            }
+            else
+            {
+                Debug.Log("Raycast missed everything!");
             }
         }
 
-        if (Input.GetMouseButtonDown(0)) // Test for node creation
+        // Left-Click to Place Nodes
+        if (Input.GetMouseButtonDown(0))
         {
             grid.GetXY(mousePos, out int x, out int y);
 
@@ -69,7 +84,6 @@ public class NodeGridSystem : MonoBehaviour
             bool canBuild = true;
             foreach (Vector2Int gridPosition in gridPositionList)
             {
-                // Correct check using CanBuild with grid coordinates
                 if (!CanBuild(gridPosition.x, gridPosition.y))
                 {
                     canBuild = false;
@@ -77,31 +91,17 @@ public class NodeGridSystem : MonoBehaviour
                 }
             }
 
-            if (canBuild) // If we can build
+            if (canBuild)
             {
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
-
-                if (dir == PlacedObjectTypeSO.Dir.Left)
-                {
-                    rotationOffset.x += 2;
-                    rotationOffset.y -= 2; 
-                }
-
-                if (dir == PlacedObjectTypeSO.Dir.Right)
-                {
-                    rotationOffset.x -= 2;
-                    rotationOffset.y += 2;  
-                }
-
                 Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y, 0) * grid.GetCellSize();
-
 
                 GameObject builtNode = Instantiate(nodePrefab, placedObjectWorldPosition, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
                 Debug.Log($"Building node at position ({x}, {y})");
 
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
-                    grid.SetGridObject(gridPosition.x, gridPosition.y, builtNode);  // Place the new node in the grid
+                    grid.SetGridObject(gridPosition.x, gridPosition.y, builtNode);
                 }
             }
             else
@@ -110,12 +110,14 @@ public class NodeGridSystem : MonoBehaviour
             }
         }
 
+        // Rotate Placement Object
         if (Input.GetKeyDown(KeyCode.R))
         {
             dir = PlacedObjectTypeSO.GetNextDir(dir);
-            Debug.Log(dir);
+            Debug.Log($"Rotation changed to: {dir}");
         }
     }
+
 
     public Vector2 mousePos
     {
@@ -124,4 +126,5 @@ public class NodeGridSystem : MonoBehaviour
             return Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
     }
+
 }
