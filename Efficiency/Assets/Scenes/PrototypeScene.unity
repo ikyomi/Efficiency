@@ -1233,6 +1233,7 @@ MonoBehaviour:
   uiManager: {fileID: 856994532}
   gameManager: {fileID: 856994535}
   nodePrefab: {fileID: 282798714269989285, guid: ac9839fd469987947b89c900fecae1b7, type: 3}
+  conveyorPrefab: {fileID: 282798714269989285, guid: eda3de2c636bc78418faa43a2ff8c010, type: 3}
   x: 0
   y: 0
 --- !u!114 &856994535
@@ -1314,6 +1315,14 @@ PrefabInstance:
     - target: {fileID: 5508478073141009277, guid: eda3de2c636bc78418faa43a2ff8c010, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6127697736768170788, guid: eda3de2c636bc78418faa43a2ff8c010, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6127697736768170788, guid: eda3de2c636bc78418faa43a2ff8c010, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.3936055
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

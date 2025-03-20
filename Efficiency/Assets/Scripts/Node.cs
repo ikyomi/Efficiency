@@ -33,10 +33,6 @@ public class Node : MonoBehaviour
 
     Color32 finalColour;
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-    }
 
     private void Awake()
     {
@@ -59,6 +55,32 @@ public class Node : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void OnTriggerStay2D(UnityEngine.Collider2D collision)
+    {
+        Debug.Log("Collision");
+
+        if (collision.gameObject.CompareTag("EndConveyor"))
+        {
+            if (nodeColour1 == null)
+            {
+                nodeColour1 = collision.gameObject;
+                Debug.Log("NodeColour1 set");
+            }
+            else
+            if (nodeColour2 == null)
+            {
+                nodeColour2 = collision.gameObject;
+                Debug.Log("NodeColour2 set");
+            }
+            else
+            if (nodeColour3 == null)
+            {
+                nodeColour3 = collision.gameObject;
+                Debug.Log("NodeColour3 set");
+            }
+        }
+    }
+
     void Update()
     {
         GameObject[] nodeColours = { nodeColour1, nodeColour2, nodeColour3 };
@@ -67,13 +89,21 @@ public class Node : MonoBehaviour
         {
             GameObject nodeColour = nodeColours[i];
 
+            Debug.Log("loop started");
+            Debug.Log(nodeColour);
+
             if (nodeColour != null)
             {
                 SpriteRenderer spriteRenderer = nodeColour.GetComponent<SpriteRenderer>();
 
+                Debug.Log("SpriteRenderer found");
+
                 if (spriteRenderer != null)
                 {
                     Color32 colour = spriteRenderer.color;
+
+                    Debug.Log(colour);
+                    Debug.Log("Colour found");
 
                     switch (i)
                     {
@@ -106,55 +136,71 @@ public class Node : MonoBehaviour
 
 
 
-
+        
 
 
 
         if (redTwo == 0 && redThree == 0)
         {
             finalRed = redOne;
+            Debug.Log($"1Final Red: {finalRed}, {redOne}");
         }
         else
         if (redThree == 0)
         {
             //LerpColor32();
             finalRed = (byte)((redOne + redTwo) / 2);
+            Debug.Log($"2Final Red: {finalRed}");
         }
         else
         { 
             finalRed = (byte)((redOne + redTwo + redThree) / 3);
+            Debug.Log($"3Final Red: {finalRed}");
         }
 
-        if (greenTwo == 0)
+        if (greenTwo == 0 && greenThree == 0)
         {
             finalGreen = greenOne;
+            Debug.Log($"1Final Green: {finalGreen}");
         }
         else
         if (greenThree == 0)
         {
             finalGreen = (byte)((greenOne + greenTwo) / 2);
+            Debug.Log($"2Final Green: {finalGreen}");
         }
         else
         {
             finalGreen = (byte)((greenOne + greenTwo + greenThree) / 3);
+            Debug.Log($"3Final Green: {finalGreen}");
         }
 
-        if (blueTwo == 0)
+        if (blueTwo == 0 && blueThree == 0)
         {
             finalBlue = blueOne;
+            Debug.Log($"1Final Blue: {finalBlue}");
         }
         else
         if (blueThree == 0)
         {
             finalBlue = (byte)((blueOne + blueTwo) / 2);
+            Debug.Log($"2Final Blue: {finalBlue}");
         }
         else
         {
             finalBlue = (byte)((blueOne + blueTwo + blueThree) / 3);
+            Debug.Log($"3Final Blue: {finalBlue}");
         }
 
-        finalColour = new Color32(finalRed, finalGreen, finalBlue, finalAlpha);
-        Debug.Log($"Final Red: {finalRed}, Final Green: {finalGreen}, Final Blue: {finalBlue}");
+        if (finalBlue == 0 || finalGreen == 0 || finalRed == 0)
+        {
+            finalColour = new Color32 (100, 100, 100, finalAlpha);
+        }
+        else 
+        {
+            finalColour = new Color32 (finalRed, finalGreen, finalBlue, finalAlpha);
+        }
+        //Debug.Log($"Final Red: {finalRed}, Final Green: {finalGreen}, Final Blue: {finalBlue}");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -176,4 +222,6 @@ public class Node : MonoBehaviour
                 //collision.gameObject.transform.parent.GetComponent<SpriteRenderer>().color;
         }
     }
+
+
 }

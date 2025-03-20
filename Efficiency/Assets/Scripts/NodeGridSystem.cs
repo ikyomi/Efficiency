@@ -10,6 +10,7 @@ public class NodeGridSystem : MonoBehaviour
     public Grid<GameObject> grid;
 
     public GameObject nodePrefab;
+    public GameObject conveyorPrefab;
 
     public int x;
     public int y;
@@ -103,11 +104,22 @@ public class NodeGridSystem : MonoBehaviour
                 {
                     grid.SetGridObject(gridPosition.x, gridPosition.y, builtNode);
                 }
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Instantiate(conveyorPrefab, mousePos, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
+                }
+
             }
             else
             {
                 Debug.Log("Can't build here");
             }
+        }
+        else
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Instantiate(conveyorPrefab, mousePos, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
         }
 
         // Rotate Placement Object
@@ -116,6 +128,8 @@ public class NodeGridSystem : MonoBehaviour
             dir = PlacedObjectTypeSO.GetNextDir(dir);
             Debug.Log($"Rotation changed to: {dir}");
         }
+
+
     }
 
 
