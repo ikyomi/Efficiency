@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     {
         totalNodePoints += (int)(nodePointsPerSecond * Time.deltaTime); //inactive
 
+
+
         if (totalNodePoints > 0)
         {
             uiManager.nodePointsToMoneyConversionButton.onClick.AddListener(Conversion);

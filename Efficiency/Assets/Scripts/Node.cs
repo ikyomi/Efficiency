@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.ShaderGraph.Legacy;
 using UnityEngine;
@@ -6,33 +9,20 @@ public class Node : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
 
-    GameObject nodeColour1;
-    GameObject nodeColour2;
-    GameObject nodeColour3;
+    [SerializeField] public GameManager gameManager;
 
-    byte redOne;
-    byte redTwo;
-    byte redThree;
+    public int finalRed;
+    public int finalGreen;
+    public int finalBlue;
 
-    byte greenOne;
-    byte greenTwo;
-    byte greenThree;
+    public Color targetColour;
 
-    byte blueOne;
-    byte blueTwo;
-    byte blueThree;
+    public Color32 finalColour;
 
-    /*byte mixedRed;
-    byte mixedGreen;
-    byte mixedBlue;*/
+    public List<Color> inputColourList = new List<Color>();
+    public List<GameObject> inputNodeList = new List<GameObject>();
 
-    byte finalRed;
-    byte finalGreen;
-    byte finalBlue;
-    byte finalAlpha = 255;
-
-    Color32 finalColour;
-
+    [SerializeField] private float lerpSpeed = 1f;
 
     private void Awake()
     {
@@ -42,165 +32,43 @@ public class Node : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        gameManager = FindObjectOfType<GameManager>();
     }
 
-    /*Color32 LerpColor32(Color32 start, Color32 end, float t)
-    {
-        mixedRed = (byte)Mathf.Lerp(start.r, end.r, t);
-        mixedGreen = (byte)Mathf.Lerp(start.g, end.g, t);
-        mixedBlue = (byte)Mathf.Lerp(start.b, end.b, t);
-
-        return finalColour = new Color32(mixedRed, mixedGreen, mixedBlue, finalAlpha);
-    }*/
-
-    // Update is called once per frame
-    private void OnTriggerStay2D(UnityEngine.Collider2D collision)
-    {
-        Debug.Log("Collision");
-
-        if (collision.gameObject.CompareTag("EndConveyor"))
-        {
-            if (nodeColour1 == null)
-            {
-                nodeColour1 = collision.gameObject;
-                Debug.Log("NodeColour1 set");
-            }
-            else
-            if (nodeColour2 == null)
-            {
-                nodeColour2 = collision.gameObject;
-                Debug.Log("NodeColour2 set");
-            }
-            else
-            if (nodeColour3 == null)
-            {
-                nodeColour3 = collision.gameObject;
-                Debug.Log("NodeColour3 set");
-            }
-        }
-    }
 
     void Update()
     {
-        GameObject[] nodeColours = { nodeColour1, nodeColour2, nodeColour3 };
+        //change the colour of the node to the target colour
+        targetColour = AverageColours();
+        spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColour, Time.deltaTime * lerpSpeed);
 
-        for (int i = 0; i < nodeColours.Length; i++)
+        finalColour = spriteRenderer.color;
+
+        finalRed = finalColour.r;
+        finalGreen = finalColour.g;
+        finalBlue = finalColour.b;
+
+        gameManager.nodePointsPerSecond = (finalRed + finalGreen + finalBlue) / 6;
+        gameManager.nodePointsPerSecond += gameManager.nodePointsPerSecond;
+    }
+
+    private Color AverageColours()
+    {
+        //if there are no input colours, return the current colour
+        if (inputColourList.Count == 0)
         {
-            GameObject nodeColour = nodeColours[i];
-
-            Debug.Log("loop started");
-            //Debug.Log(nodeColour);
-
-            if (nodeColour != null)
-            {
-                SpriteRenderer spriteRenderer = nodeColour.gameObject.transform.parent.GetComponent<SpriteRenderer>();
-
-                Debug.Log("SpriteRenderer found");
-
-                if (spriteRenderer != null)
-                {
-                    Color32 colour = spriteRenderer.color;
-
-                    Debug.Log(colour);
-                    Debug.Log("Colour found");
-
-                    switch (i)
-                    {
-                        case 0:
-                            redOne = colour.r;
-                            greenOne = colour.g;
-                            blueOne = colour.b;
-                            Debug.Log($"case 0 // Red: {redOne}, Green: {greenOne}, Blue: {blueOne}");
-                            break;
-                        case 1:
-                            redTwo = colour.r;
-                            greenTwo = colour.g;
-                            blueTwo = colour.b;
-                            Debug.Log($"case 1 // Red: {redTwo}, Green: {greenTwo}, Blue: {blueTwo}");
-                            break;
-                        case 2:
-                            redThree = colour.r;
-                            greenThree = colour.g;
-                            blueThree = colour.b;
-                            Debug.Log($"case 2 // Red: {redThree}, Green: {greenThree}, Blue: {blueThree}");
-                            break;
-                    }
-                }
-                else
-                {
-                    //Debug.Log($"{nodeColour.name} does not have a SpriteRenderer.");
-                }
-            }
+            return spriteRenderer.color;
         }
-
-
-
-        
-
-
-
-        if (redTwo == 0 && redThree == 0)
+        //create a new colour to store the average colour
+        Color averageColour = new Color(0, 0, 0, 0);
+        //add all the input colours together
+        foreach (Color colour in inputColourList)
         {
-            finalRed = redOne;
-            //Debug.Log($"1Final Red: {finalRed}, {redOne}");
+            averageColour += colour;
         }
-        else
-        if (redThree == 0)
-        {
-            //LerpColor32();
-            finalRed = (byte)((redOne + redTwo) / 2);
-            //Debug.Log($"2Final Red: {finalRed}");
-        }
-        else
-        { 
-            finalRed = (byte)((redOne + redTwo + redThree) / 3);
-            //Debug.Log($"3Final Red: {finalRed}");
-        }
-
-        if (greenTwo == 0 && greenThree == 0)
-        {
-            finalGreen = greenOne;
-            //Debug.Log($"1Final Green: {finalGreen}");
-        }
-        else
-        if (greenThree == 0)
-        {
-            finalGreen = (byte)((greenOne + greenTwo) / 2);
-            //Debug.Log($"2Final Green: {finalGreen}");
-        }
-        else
-        {
-            finalGreen = (byte)((greenOne + greenTwo + greenThree) / 3);
-            //Debug.Log($"3Final Green: {finalGreen}");
-        }
-
-        if (blueTwo == 0 && blueThree == 0)
-        {
-            finalBlue = blueOne;
-            //Debug.Log($"1Final Blue: {finalBlue}");
-        }
-        else
-        if (blueThree == 0)
-        {
-            finalBlue = (byte)((blueOne + blueTwo) / 2);
-            //Debug.Log($"2Final Blue: {finalBlue}");
-        }
-        else
-        {
-            finalBlue = (byte)((blueOne + blueTwo + blueThree) / 3);
-            //Debug.Log($"3Final Blue: {finalBlue}");
-        }
-
-        if (finalBlue == 0 && finalGreen == 0 && finalRed == 0)
-        {
-            finalColour = new Color32 (100, 100, 100, finalAlpha);
-        }
-        else 
-        {
-            finalColour = new Color32 (finalRed, finalGreen, finalBlue, finalAlpha);
-        }
-        Debug.LogError($"Final Red: {finalRed}, Final Green: {finalGreen}, Final Blue: {finalBlue}");
+        //divide the total by the number of colours to get the average
+        averageColour /= inputColourList.Count;
+        return averageColour;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -214,12 +82,16 @@ public class Node : MonoBehaviour
             collision.gameObject.transform.parent.GetComponent<SpriteRenderer>().color = spriteRenderer.color;
         }
 
-        if (collision.gameObject.CompareTag("EndConveyor"))
+        if (collision.gameObject.CompareTag("EndConveyor"));
         {
-            Debug.Log("End Conveyor");
-            //set the colour of the end point to the colour of the node
-            spriteRenderer.color = finalColour;
-            //collision.gameObject.transform.parent.GetComponent<SpriteRenderer>().color;
+            Debug.Log(collision.gameObject.name);
+
+            Color inputColor = collision.transform.parent.GetComponent<SpriteRenderer>().color;
+
+            if(!inputColourList.Contains(inputColor))
+            {
+                inputColourList.Add(inputColor);
+            }
         }
     }
 }
