@@ -22,9 +22,9 @@ public class Node : MonoBehaviour
     byte blueTwo;
     byte blueThree;
 
-    byte mixedRed;
+    /*byte mixedRed;
     byte mixedGreen;
-    byte mixedBlue;
+    byte mixedBlue;*/
 
     byte finalRed;
     byte finalGreen;
@@ -45,14 +45,14 @@ public class Node : MonoBehaviour
         
     }
 
-    Color32 LerpColor32(Color32 start, Color32 end, float t)
+    /*Color32 LerpColor32(Color32 start, Color32 end, float t)
     {
         mixedRed = (byte)Mathf.Lerp(start.r, end.r, t);
         mixedGreen = (byte)Mathf.Lerp(start.g, end.g, t);
         mixedBlue = (byte)Mathf.Lerp(start.b, end.b, t);
 
         return finalColour = new Color32(mixedRed, mixedGreen, mixedBlue, finalAlpha);
-    }
+    }*/
 
     // Update is called once per frame
     private void OnTriggerStay2D(UnityEngine.Collider2D collision)
@@ -90,11 +90,11 @@ public class Node : MonoBehaviour
             GameObject nodeColour = nodeColours[i];
 
             Debug.Log("loop started");
-            Debug.Log(nodeColour);
+            //Debug.Log(nodeColour);
 
             if (nodeColour != null)
             {
-                SpriteRenderer spriteRenderer = nodeColour.GetComponent<SpriteRenderer>();
+                SpriteRenderer spriteRenderer = nodeColour.gameObject.transform.parent.GetComponent<SpriteRenderer>();
 
                 Debug.Log("SpriteRenderer found");
 
@@ -111,25 +111,25 @@ public class Node : MonoBehaviour
                             redOne = colour.r;
                             greenOne = colour.g;
                             blueOne = colour.b;
-                            Debug.Log($"Red: {redOne}, Green: {greenOne}, Blue: {blueOne}");
+                            Debug.Log($"case 0 // Red: {redOne}, Green: {greenOne}, Blue: {blueOne}");
                             break;
                         case 1:
                             redTwo = colour.r;
                             greenTwo = colour.g;
                             blueTwo = colour.b;
-                            Debug.Log($"Red: {redTwo}, Green: {greenTwo}, Blue: {blueTwo}");
+                            Debug.Log($"case 1 // Red: {redTwo}, Green: {greenTwo}, Blue: {blueTwo}");
                             break;
                         case 2:
                             redThree = colour.r;
                             greenThree = colour.g;
                             blueThree = colour.b;
-                            Debug.Log($"Red: {redThree}, Green: {greenThree}, Blue: {blueThree}");
+                            Debug.Log($"case 2 // Red: {redThree}, Green: {greenThree}, Blue: {blueThree}");
                             break;
                     }
                 }
                 else
                 {
-                    Debug.Log($"{nodeColour.name} does not have a SpriteRenderer.");
+                    //Debug.Log($"{nodeColour.name} does not have a SpriteRenderer.");
                 }
             }
         }
@@ -143,56 +143,56 @@ public class Node : MonoBehaviour
         if (redTwo == 0 && redThree == 0)
         {
             finalRed = redOne;
-            Debug.Log($"1Final Red: {finalRed}, {redOne}");
+            //Debug.Log($"1Final Red: {finalRed}, {redOne}");
         }
         else
         if (redThree == 0)
         {
             //LerpColor32();
             finalRed = (byte)((redOne + redTwo) / 2);
-            Debug.Log($"2Final Red: {finalRed}");
+            //Debug.Log($"2Final Red: {finalRed}");
         }
         else
         { 
             finalRed = (byte)((redOne + redTwo + redThree) / 3);
-            Debug.Log($"3Final Red: {finalRed}");
+            //Debug.Log($"3Final Red: {finalRed}");
         }
 
         if (greenTwo == 0 && greenThree == 0)
         {
             finalGreen = greenOne;
-            Debug.Log($"1Final Green: {finalGreen}");
+            //Debug.Log($"1Final Green: {finalGreen}");
         }
         else
         if (greenThree == 0)
         {
             finalGreen = (byte)((greenOne + greenTwo) / 2);
-            Debug.Log($"2Final Green: {finalGreen}");
+            //Debug.Log($"2Final Green: {finalGreen}");
         }
         else
         {
             finalGreen = (byte)((greenOne + greenTwo + greenThree) / 3);
-            Debug.Log($"3Final Green: {finalGreen}");
+            //Debug.Log($"3Final Green: {finalGreen}");
         }
 
         if (blueTwo == 0 && blueThree == 0)
         {
             finalBlue = blueOne;
-            Debug.Log($"1Final Blue: {finalBlue}");
+            //Debug.Log($"1Final Blue: {finalBlue}");
         }
         else
         if (blueThree == 0)
         {
             finalBlue = (byte)((blueOne + blueTwo) / 2);
-            Debug.Log($"2Final Blue: {finalBlue}");
+            //Debug.Log($"2Final Blue: {finalBlue}");
         }
         else
         {
             finalBlue = (byte)((blueOne + blueTwo + blueThree) / 3);
-            Debug.Log($"3Final Blue: {finalBlue}");
+            //Debug.Log($"3Final Blue: {finalBlue}");
         }
 
-        if (finalBlue == 0 || finalGreen == 0 || finalRed == 0)
+        if (finalBlue == 0 && finalGreen == 0 && finalRed == 0)
         {
             finalColour = new Color32 (100, 100, 100, finalAlpha);
         }
@@ -200,7 +200,7 @@ public class Node : MonoBehaviour
         {
             finalColour = new Color32 (finalRed, finalGreen, finalBlue, finalAlpha);
         }
-        //Debug.Log($"Final Red: {finalRed}, Final Green: {finalGreen}, Final Blue: {finalBlue}");
+        Debug.LogError($"Final Red: {finalRed}, Final Green: {finalGreen}, Final Blue: {finalBlue}");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -219,9 +219,7 @@ public class Node : MonoBehaviour
             Debug.Log("End Conveyor");
             //set the colour of the end point to the colour of the node
             spriteRenderer.color = finalColour;
-                //collision.gameObject.transform.parent.GetComponent<SpriteRenderer>().color;
+            //collision.gameObject.transform.parent.GetComponent<SpriteRenderer>().color;
         }
     }
-
-
 }

@@ -119,6 +119,8 @@ public class NodeGridSystem : MonoBehaviour
         else
         if (Input.GetKeyDown(KeyCode.E))
         {
+            Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
+            Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y, 0) * grid.GetCellSize();
             Instantiate(conveyorPrefab, mousePos, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
         }
 
@@ -126,7 +128,7 @@ public class NodeGridSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             dir = PlacedObjectTypeSO.GetNextDir(dir);
-            Debug.Log($"Rotation changed to: {dir}");
+            //Debug.Log($"Rotation changed to: {dir}");
         }
 
 

@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public GameManager gameManager;
 
     public TMP_Text nodePointText;
+    public TMP_Text nodePointsPerSecondText;
     public TMP_Text moneyText;
 
     public Button nodePointsToMoneyConversionButton;
@@ -23,7 +24,6 @@ public class UIManager : MonoBehaviour
     {
         nodePointText.text = gameManager.totalNodePoints.ToString();
         moneyText.text = "$" + gameManager.totalMoney.ToString();
-
-
+        nodePointsPerSecondText.text = "Nodes Per Second: " + gameManager.nodePointsPerSecond.ToString();
     }
 }
