@@ -7,6 +7,7 @@ public class NodeGridSystem : MonoBehaviour
     public PlacedObjectTypeSO placedObjectTypeSO;
     public UIManager uiManager;
     public GameManager gameManager;
+    public Node node;
     public Grid<GameObject> grid;
 
     public GameObject nodePrefab;
@@ -99,6 +100,7 @@ public class NodeGridSystem : MonoBehaviour
 
                 GameObject builtNode = Instantiate(nodePrefab, placedObjectWorldPosition, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
                 Debug.Log($"Building node at position ({x}, {y})");
+                node.PlaceNode();
 
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {

@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     public int totalNodePoints;
     public int nodePointsPerSecond;
 
+    public float nodeTimer = 0;
+    public int nodeInterval = 1;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,9 +19,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        totalNodePoints += (int)(nodePointsPerSecond * Time.deltaTime); //inactive
-
-
+        if (nodeTimer >= nodeInterval)
+        {
+            totalNodePoints += nodePointsPerSecond;
+            nodeTimer = 0;
+        }
+        else
+        {
+            nodeTimer += Time.deltaTime;
+        }
 
         if (totalNodePoints > 0)
         {

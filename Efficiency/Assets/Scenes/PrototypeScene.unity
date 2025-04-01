@@ -1249,6 +1249,7 @@ MonoBehaviour:
   placedObjectTypeSO: {fileID: 11400000, guid: 3afcc66d75bc5c74a9b9386aa4499dba, type: 2}
   uiManager: {fileID: 856994532}
   gameManager: {fileID: 856994535}
+  node: {fileID: 1022579099}
   nodePrefab: {fileID: 282798714269989285, guid: ac9839fd469987947b89c900fecae1b7, type: 3}
   conveyorPrefab: {fileID: 282798714269989285, guid: eda3de2c636bc78418faa43a2ff8c010, type: 3}
   x: 0
@@ -1269,6 +1270,8 @@ MonoBehaviour:
   totalMoney: 0
   totalNodePoints: 0
   nodePointsPerSecond: 0
+  nodeTimer: 0
+  nodeInterval: 1
 --- !u!114 &856994536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1282,6 +1285,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 519420031}
+--- !u!114 &1022579099 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3169558272509836142, guid: ac9839fd469987947b89c900fecae1b7, type: 3}
+  m_PrefabInstance: {fileID: 200244650}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec235c816f13004186e243e0394785d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1042929950
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -11,13 +12,10 @@ public class Node : MonoBehaviour
 
     [SerializeField] public GameManager gameManager;
 
-    public int finalRed;
-    public int finalGreen;
-    public int finalBlue;
-
     public Color targetColour;
 
-    public Color32 finalColour;
+    private bool isNodePlaced = false;
+    public static event Action OnNodePlaced;
 
     public List<Color> inputColourList = new List<Color>();
     public List<GameObject> inputNodeList = new List<GameObject>();
@@ -27,12 +25,12 @@ public class Node : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
     }
 
 
@@ -41,15 +39,59 @@ public class Node : MonoBehaviour
         //change the colour of the node to the target colour
         targetColour = AverageColours();
         spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColour, Time.deltaTime * lerpSpeed);
+    }
 
-        finalColour = spriteRenderer.color;
+    // This method will be called when a node is placed
+    public void PlaceNode()
+    {
+        if (!isNodePlaced)
+        {
+            isNodePlaced = true;
+            // Call the event to signal node placement
+            OnNodePlaced?.Invoke();
+        }
+    }
 
-        finalRed = finalColour.r;
-        finalGreen = finalColour.g;
-        finalBlue = finalColour.b;
+    private void OnEnable()
+    {
+        // Subscribe to the event
+        OnNodePlaced += UpdateNodePoints;
+    }
 
-        gameManager.nodePointsPerSecond = (finalRed + finalGreen + finalBlue) / 6;
-        gameManager.nodePointsPerSecond += gameManager.nodePointsPerSecond;
+    private void OnDisable()
+    {
+        // Unsubscribe from the event to avoid memory leaks
+        OnNodePlaced -= UpdateNodePoints;
+    }
+
+    private void UpdateNodePoints()
+    {
+        Debug.Log("UpdateNodePoints called");
+        // Check if the inputColourList is empty
+        if (inputColourList.Count == 0)
+        {
+            Debug.LogWarning("No colors in inputColourList to calculate node points.");
+            return; // Exit early if the list is empty
+        }
+
+        // Calculate the average color value (from your previous code)
+        int finalRed = 0;
+        int finalGreen = 0;
+        int finalBlue = 0;
+
+        foreach (Color colour in inputColourList)
+        {
+            finalRed += (int)(colour.r * 255);
+            finalGreen += (int)(colour.g * 255);
+            finalBlue += (int)(colour.b * 255);
+        }
+
+        int averageColorValue = (finalRed + finalGreen + finalBlue) / (inputColourList.Count * 3);
+
+        // Add to the nodePointsPerSecond when a node is placed
+        gameManager.nodePointsPerSecond += averageColorValue;
+
+        Debug.Log("Node Points per Second Updated: " + gameManager.nodePointsPerSecond);
     }
 
     private Color AverageColours()
@@ -68,6 +110,7 @@ public class Node : MonoBehaviour
         }
         //divide the total by the number of colours to get the average
         averageColour /= inputColourList.Count;
+
         return averageColour;
     }
 
@@ -82,9 +125,9 @@ public class Node : MonoBehaviour
             collision.gameObject.transform.parent.GetComponent<SpriteRenderer>().color = spriteRenderer.color;
         }
 
-        if (collision.gameObject.CompareTag("EndConveyor"));
+        if (collision.gameObject.CompareTag("EndConveyor"))
         {
-            Debug.Log(collision.gameObject.name);
+            Debug.Log(collision.gameObject.tag);
 
             Color inputColor = collision.transform.parent.GetComponent<SpriteRenderer>().color;
 
