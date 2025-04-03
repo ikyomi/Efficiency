@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        nodePointText.text = gameManager.totalNodePoints.ToString();
+        nodePointText.text = "NP: " + gameManager.totalNodePoints.ToString();
         moneyText.text = "$" + gameManager.totalMoney.ToString();
         nodePointsPerSecondText.text = "Nodes Per Second: " + gameManager.nodePointsPerSecond.ToString();
     }

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e7747bdf78fa6141a2f81d16ff91e5f, type: 3}
-  m_Name: Node1x1
+  m_Name: GreenNode
   m_EditorClassIdentifier: 
-  nameString: WhiteNode1x1
-  prefab: {fileID: 282798714269989285, guid: ac9839fd469987947b89c900fecae1b7, type: 3}
+  nameString: GreenNode
+  prefab: {fileID: 282798714269989285, guid: 945910320c9b17c4a84845f16b85249a, type: 3}
   visual: {fileID: 0}
   width: 1
   height: 1

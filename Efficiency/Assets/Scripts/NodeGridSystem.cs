@@ -4,7 +4,8 @@ using UnityEngine.EventSystems;
 
 public class NodeGridSystem : MonoBehaviour
 {
-    public PlacedObjectTypeSO placedObjectTypeSO;
+    [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList;
+    private PlacedObjectTypeSO placedObjectTypeSO;
     public UIManager uiManager;
     public GameManager gameManager;
     public Node node;
@@ -20,6 +21,11 @@ public class NodeGridSystem : MonoBehaviour
 
     private Vector2 startPoint;
     private Vector2 endPoint;
+
+    private void Awake()
+    {
+        placedObjectTypeSO = placedObjectTypeSOList[0];  // Default to the first object type
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,7 +50,7 @@ public class NodeGridSystem : MonoBehaviour
     public bool CanBuild(int x, int y)
     {
         GameObject existingNode = grid.GetGridObject(x, y);  // Get the existing node at this position
-        Debug.Log($"Checking build at ({x}, {y}): {(existingNode == null ? "Can Build" : "Cannot Build")}");
+        //Debug.Log($"Checking build at ({x}, {y}): {(existingNode == null ? "Can Build" : "Cannot Build")}");
         return existingNode == null;  // We can build if there's no existing node (i.e., the position is empty)
     }
 
@@ -61,7 +67,7 @@ public class NodeGridSystem : MonoBehaviour
             if (hit.collider != null)
             {
                 GameObject hitObject = hit.collider.gameObject;
-                Debug.Log($"Raycast hit: {hitObject.name}");
+                //Debug.Log($"Raycast hit: {hitObject.name}");
 
                 // Check if we hit a node or its child
                 if (hitObject.CompareTag("Node") || (hitObject.transform.parent != null && hitObject.transform.parent.CompareTag("Node")))
@@ -98,18 +104,13 @@ public class NodeGridSystem : MonoBehaviour
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
                 Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y, 0) * grid.GetCellSize();
 
-                GameObject builtNode = Instantiate(nodePrefab, placedObjectWorldPosition, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
-                Debug.Log($"Building node at position ({x}, {y})");
                 node.PlaceNode();
+                GameObject builtNode = Instantiate(placedObjectTypeSO.prefab, placedObjectWorldPosition, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
+                //Debug.Log($"Building node at position ({x}, {y})");
 
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
                     grid.SetGridObject(gridPosition.x, gridPosition.y, builtNode);
-                }
-
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    Instantiate(conveyorPrefab, mousePos, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
                 }
 
             }
@@ -117,13 +118,6 @@ public class NodeGridSystem : MonoBehaviour
             {
                 Debug.Log("Can't build here");
             }
-        }
-        else
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
-            Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y, 0) * grid.GetCellSize();
-            Instantiate(conveyorPrefab, mousePos, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
         }
 
         // Rotate Placement Object
@@ -133,6 +127,10 @@ public class NodeGridSystem : MonoBehaviour
             //Debug.Log($"Rotation changed to: {dir}");
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1)) { placedObjectTypeSO = placedObjectTypeSOList[0]; }
+        if (Input.GetKeyDown(KeyCode.Alpha2)) { placedObjectTypeSO = placedObjectTypeSOList[1]; }
+        if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2]; }
+        if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3]; }
 
     }
 
