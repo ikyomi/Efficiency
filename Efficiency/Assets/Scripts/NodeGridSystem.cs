@@ -104,9 +104,14 @@ public class NodeGridSystem : MonoBehaviour
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
                 Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y, 0) * grid.GetCellSize();
 
-                node.PlaceNode();
+/*                node.PlaceNode();*/
                 GameObject builtNode = Instantiate(placedObjectTypeSO.prefab, placedObjectWorldPosition, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
                 //Debug.Log($"Building node at position ({x}, {y})");
+
+                if(builtNode.CompareTag("Node"))
+                {
+                    gameManager.nodeList.Add(builtNode.GetComponentInChildren<Node>());
+                }
 
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
@@ -124,7 +129,7 @@ public class NodeGridSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             dir = PlacedObjectTypeSO.GetNextDir(dir);
-            //Debug.Log($"Rotation changed to: {dir}");
+            Debug.Log($"Rotation changed to: {dir}");
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1)) { placedObjectTypeSO = placedObjectTypeSOList[0]; }

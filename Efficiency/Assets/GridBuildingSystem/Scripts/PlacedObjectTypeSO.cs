@@ -51,9 +51,9 @@ public class PlacedObjectTypeSO : ScriptableObject
         {
             default:
             case Dir.Down: return new Vector2Int(0, 0);        // No offset for Down
-            case Dir.Left: return new Vector2Int(0, width);     // Offset to the right for Left
+            case Dir.Left: return new Vector2Int(1, width - 1);     // Offset to the right for Left
             case Dir.Up: return new Vector2Int(width, height); // Offset for Up (Width and Height)
-            case Dir.Right: return new Vector2Int(height, 0);    // Offset for Right
+            case Dir.Right: return new Vector2Int(height - 1, 1);    // Offset for Right
         }
     }
 

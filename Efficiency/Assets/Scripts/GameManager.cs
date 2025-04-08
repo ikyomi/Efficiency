@@ -1,12 +1,17 @@
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public UIManager uiManager;
+    public List<Node> nodeList = new List<Node>();  
 
     public int totalMoney;
     public int totalNodePoints;
     public int nodePointsPerSecond;
+    private double tempNodePointsPerSecond;
 
     public float nodeTimer = 0;
     public int nodeInterval = 1;
@@ -19,9 +24,22 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (nodeTimer >= nodeInterval)
+        if (nodeTimer >= nodeInterval && nodeList.Count > 0)
         {
+            nodePointsPerSecond = 0; // Reset points per second for this interval
+            foreach (Node node in nodeList)
+            {
+                node.UpdateNodePoints();
+
+                // Assuming each node contributes 1 point per second
+                nodePointsPerSecond += node.nodeColourPointValue;
+            }
+
+            tempNodePointsPerSecond = (nodePointsPerSecond /= nodeList.Count); // Average points per second across all nodes
+            tempNodePointsPerSecond = (nodePointsPerSecond * (Math.Exp(1) / Math.PI) / (Math.PI / Math.Exp(1)));
+            nodePointsPerSecond = (int)Math.Floor(tempNodePointsPerSecond); // Convert to int for total points
             totalNodePoints += nodePointsPerSecond;
+            Debug.Log(nodeList.Count + " nodes, " + nodePointsPerSecond + " points per second");
             nodeTimer = 0;
         }
         else
