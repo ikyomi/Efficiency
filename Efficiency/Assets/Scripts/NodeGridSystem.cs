@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,6 +18,8 @@ public class NodeGridSystem : MonoBehaviour
 
     public int x;
     public int y;
+
+    public bool overUi = false;
 
     private PlacedObjectTypeSO.Dir dir = PlacedObjectTypeSO.Dir.Down;
 
@@ -52,6 +56,22 @@ public class NodeGridSystem : MonoBehaviour
         GameObject existingNode = grid.GetGridObject(x, y);  // Get the existing node at this position
         //Debug.Log($"Checking build at ({x}, {y}): {(existingNode == null ? "Can Build" : "Cannot Build")}");
         return existingNode == null;  // We can build if there's no existing node (i.e., the position is empty)
+    }
+
+    private void OnMouseOver()
+    {
+        if (CompareTag("UI"))
+        {
+            overUi = true;
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (!CompareTag("UI"))
+        {
+            overUi = false;
+        }
     }
 
     void Update()
@@ -99,7 +119,7 @@ public class NodeGridSystem : MonoBehaviour
                 }
             }
 
-            if (canBuild)
+            if (canBuild && overUi == false)
             {
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
                 Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y, 0) * grid.GetCellSize();

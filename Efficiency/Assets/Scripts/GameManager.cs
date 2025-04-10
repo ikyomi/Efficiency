@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     public int totalMoney;
     public int totalNodePoints;
+    private double tempTotalNodePoints;
     public int nodePointsPerSecond;
     private double tempNodePointsPerSecond;
 
@@ -59,6 +60,8 @@ public class GameManager : MonoBehaviour
 
     public void Conversion()
     {
+        tempTotalNodePoints = (totalNodePoints / (tempNodePointsPerSecond / Math.PI));
+        totalNodePoints = (int)Math.Floor(tempTotalNodePoints);
         totalMoney += totalNodePoints;
         Debug.Log("nodes converted:" + totalNodePoints + " , " + "money: $" + totalMoney);
         totalNodePoints = 0;
