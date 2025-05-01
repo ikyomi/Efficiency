@@ -152,13 +152,24 @@ public class NodeGridSystem : MonoBehaviour
             Debug.Log($"Rotation changed to: {dir}");
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { placedObjectTypeSO = placedObjectTypeSOList[0]; }
+        /*if (Input.GetKeyDown(KeyCode.Alpha1)) { placedObjectTypeSO = placedObjectTypeSOList[0]; }
         if (Input.GetKeyDown(KeyCode.Alpha2)) { placedObjectTypeSO = placedObjectTypeSOList[1]; }
         if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2]; }
-        if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3]; }
+        if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3]; }*/
 
     }
 
+    public void SetPlacedObjectType(int index)
+    {
+        if (index >= 0 && index < placedObjectTypeSOList.Count)
+        {
+            placedObjectTypeSO = placedObjectTypeSOList[index];
+        }
+        else
+        {
+            Debug.LogWarning("Index out of range: " + index);
+        }
+    }
 
     public Vector2 mousePos
     {
