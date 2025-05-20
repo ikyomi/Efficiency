@@ -38,15 +38,15 @@ public class NodeGridSystem : MonoBehaviour
         grid = new Grid<GameObject>(40, 20, 10f, new Vector2(-200, -100), (Grid<GameObject> g, int x, int y) => null);  // Initialize with null (empty)
     }
 
-    public void SetPrefab(GameObject nodePrefab)
+    public void SetPrefab(Node node)
     {
-        this.nodePrefab = nodePrefab;
+        this.node = node;
         grid.TriggerGridObjectChanged(x, y);
     }
 
     public void ClearPrefab()
     {
-        nodePrefab = null;
+        node = null;
         grid.TriggerGridObjectChanged(x, y);
     }
 
@@ -121,27 +121,56 @@ public class NodeGridSystem : MonoBehaviour
 
             if (canBuild && overUi == false)
             {
+               /* if (placedObjectTypeSO == null)
+                {
+                    Debug.LogError("placedObjectTypeSO is NULL before Node.Create is called.");
+                    return;
+                }
+                else
+                {
+                    Debug.Log($"Placed Object Type: {placedObjectTypeSO.nameString}");
+                }*/
+
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
                 Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y, 0) * grid.GetCellSize();
+/*
+                Debug.Log($"Placing object at: {placedObjectWorldPosition}");
+                Debug.Log($"Dir: { dir}");
+                Debug.Log($"Placed Object Type: {placedObjectTypeSO.nameString}");*/
+                
+                PlacedObject node = PlacedObject.Create(placedObjectWorldPosition, new Vector2Int(x, y), dir, placedObjectTypeSO); // Create the node at the specified position
 
-/*                node.PlaceNode();*/
-                GameObject builtNode = Instantiate(placedObjectTypeSO.prefab, placedObjectWorldPosition, Quaternion.Euler(0, 0, placedObjectTypeSO.GetRotationAngle(dir)));
-                //Debug.Log($"Building node at position ({x}, {y})");
-
-                if(builtNode.CompareTag("Node"))
+                /*if (node == null)
                 {
-                    gameManager.nodeList.Add(builtNode.GetComponentInChildren<Node>());
-                }
+                    Debug.LogError("Node is null after Node.Create!");
+                    return;
+                }*/
 
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
-                    grid.SetGridObject(gridPosition.x, gridPosition.y, builtNode);
+                    grid.SetGridObject(gridPosition.x, gridPosition.y, node.gameObject);
                 }
 
             }
             else
             {
                 Debug.Log("Can't build here");
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            GameObject gameObject = grid.GetGridObject(x, y);
+            PlacedObject node = gameObject.GetComponent<PlacedObject>();
+            if (node != null)
+            {
+                node.DestroySelf();
+
+                List<Vector2Int> gridPositionList = node.GetGridPositionList();
+                foreach (Vector2Int gridPosition in gridPositionList)
+                {
+                    grid.SetGridObject(gridPosition.x, gridPosition.y, null);
+                }
             }
         }
 

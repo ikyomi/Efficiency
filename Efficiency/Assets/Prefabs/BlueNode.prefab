@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 159128060905600827}
   - component: {fileID: 5577363246615072499}
   - component: {fileID: 3169558272509836142}
+  - component: {fileID: 8423216940886144451}
   m_Layer: 0
   m_Name: Node
   m_TagString: Node
@@ -211,4 +212,17 @@ MonoBehaviour:
   targetColour: {r: 0, g: 0, b: 0, a: 0}
   inputColourList: []
   inputNodeList: []
+  nodeColourPointValue: 0
   lerpSpeed: 1
+--- !u!114 &8423216940886144451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5700068349242446573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115f9f28584a8434f92585b5b98a3f27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
