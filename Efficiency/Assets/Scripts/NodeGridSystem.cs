@@ -54,24 +54,8 @@ public class NodeGridSystem : MonoBehaviour
     public bool CanBuild(int x, int y)
     {
         GameObject existingNode = grid.GetGridObject(x, y);  // Get the existing node at this position
-        //Debug.Log($"Checking build at ({x}, {y}): {(existingNode == null ? "Can Build" : "Cannot Build")}");
+        Debug.Log($"Checking build at ({x}, {y}): {(existingNode == null ? "Can Build" : "Cannot Build")}");
         return existingNode == null;  // We can build if there's no existing node (i.e., the position is empty)
-    }
-
-    private void OnMouseOver()
-    {
-        if (CompareTag("UI"))
-        {
-            overUi = true;
-        }
-    }
-
-    private void OnMouseExit()
-    {
-        if (!CompareTag("UI"))
-        {
-            overUi = false;
-        }
     }
 
     void Update()
@@ -79,7 +63,7 @@ public class NodeGridSystem : MonoBehaviour
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         // Right-Click for Clicker Mechanic
-        if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(3) && !EventSystem.current.IsPointerOverGameObject())
         {
             grid.GetXY(mousePos, out int x, out int y);
 
@@ -160,8 +144,14 @@ public class NodeGridSystem : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            GameObject gameObject = grid.GetGridObject(x, y);
-            PlacedObject node = gameObject.GetComponent<PlacedObject>();
+            GameObject gameObject = grid.GetGridObject(x, y); //fix this... is null
+            // Check if the gameObject is null
+            if (gameObject == null)
+            {
+                Debug.LogWarning($"GameObject at grid position ({x}, {y}) is null.");
+                return; // Exit early if gameObject is null
+            }
+            PlacedObject node = gameObject.GetComponentInChildren<PlacedObject>();
             if (node != null)
             {
                 node.DestroySelf();
