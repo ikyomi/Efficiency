@@ -61,7 +61,14 @@ public class Node : MonoBehaviour
         finalGreen += (int)(spriteRenderer.color.g * 255);
         finalBlue += (int)(spriteRenderer.color.b * 255);
 
-        nodeColourPointValue = (finalRed + finalGreen + finalBlue) / 3;  //(inputColourList.Count * 3);
+        if (finalRed == 0 && finalGreen == 0 && finalBlue == 0 || finalRed == 255 && finalGreen == 255 && finalBlue == 255)
+        {
+            nodeColourPointValue = 0;
+        }
+        else
+        {
+            nodeColourPointValue = (finalRed + finalGreen + finalBlue) / 3;  //(inputColourList.Count * 3);
+        }
     }
 
     private Color AverageColours()
@@ -104,6 +111,34 @@ public class Node : MonoBehaviour
             if(!inputColourList.Contains(inputColor))
             {
                 inputColourList.Add(inputColor);
+            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("StartConveyor"))
+        {
+            Debug.Log("Start Conveyor Exit");
+            //spriteRenderer.color = Color.white; // Reset the node's color when exiting a start conveyor
+
+            //if the start point is not the same as the node, remove it from the input list
+            if (collision.gameObject != transform.parent.gameObject)
+            {
+                Color inputColor = collision.transform.parent.GetComponent<SpriteRenderer>().color;
+                if (inputColourList.Contains(inputColor))
+                {
+                    inputColourList.Remove(inputColor);
+                }
+            }
+        }
+
+        if (collision.gameObject.CompareTag("EndConveyor"))
+        {
+            Debug.Log(collision.gameObject.tag);
+            Color inputColor = collision.transform.parent.GetComponent<SpriteRenderer>().color;
+            if (inputColourList.Contains(inputColor))
+            {
+                inputColourList.Remove(inputColor);
             }
         }
     }

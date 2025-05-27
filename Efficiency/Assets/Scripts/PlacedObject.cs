@@ -41,7 +41,16 @@ public class PlacedObject : MonoBehaviour
     private Vector2Int origin;
     private PlacedObjectTypeSO.Dir dir;
 
-    public void DestroySelf() { Destroy(gameObject); }
+    public void DestroySelf()
+    {
+        Node nodeComponent = GetComponentInChildren<Node>();
+        if (nodeComponent != null && nodeComponent.gameManager != null)
+        {
+            nodeComponent.gameManager.nodeList.Remove(nodeComponent);
+        }
+
+        Destroy(transform.root.gameObject);  // Destroy entire prefab root
+    }
 
     public List<Vector2Int> GetGridPositionList()
     {

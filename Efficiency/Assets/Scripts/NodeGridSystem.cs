@@ -144,7 +144,9 @@ public class NodeGridSystem : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
+            grid.GetXY(mousePos, out int x, out int y);  // Get correct grid position from mouse
             GameObject gameObject = grid.GetGridObject(x, y); //fix this... is null
+
             // Check if the gameObject is null
             if (gameObject == null)
             {

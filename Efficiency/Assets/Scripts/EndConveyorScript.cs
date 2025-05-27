@@ -31,4 +31,14 @@ public class EndConveyorScript : MonoBehaviour
             collision.transform.parent.GetComponent<SpriteRenderer>().color = transform.parent.GetComponent<SpriteRenderer>().color;
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        //Debug.Log("End Conveyor exit: " + collision.gameObject.name);
+        if (collision.gameObject.CompareTag("StartConveyor") && collision.gameObject != transform.parent)
+        {
+            SpriteRenderer spriteRenderer = transform.parent.GetComponent<SpriteRenderer>();
+            spriteRenderer.color = Color.white; // Reset the color to white when exiting the conveyor
+        }
+    }
 }
