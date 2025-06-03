@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     public TMP_Text nodePointsPerSecondText;
     public TMP_Text moneyText;
 
+    public Scrollbar scrollbar;
+
     public Button nodePointsToMoneyConversionButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
