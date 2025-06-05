@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    //public Clicker clicker;
     public GameManager gameManager;
 
     public TMP_Text nodePointText;
@@ -13,7 +12,14 @@ public class UIManager : MonoBehaviour
 
     public Scrollbar scrollbar;
 
+    public GameObject scrollbarContent;
+
     public Button nodePointsToMoneyConversionButton;
+    public Button newNodeButton;
+    public Button newNodeColourPrefab;
+
+    private float lastSpawnTime = -1f;
+    private float cooldown = 1f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,5 +33,16 @@ public class UIManager : MonoBehaviour
         nodePointText.text = "NP: " + gameManager.totalNodePoints.ToString();
         moneyText.text = "$" + gameManager.totalMoney.ToString();
         nodePointsPerSecondText.text = "Nodes Per Second: " + gameManager.nodePointsPerSecond.ToString();
+
+        newNodeButton.onClick.AddListener(AddNewNodeButton);
+    }
+
+    public void AddNewNodeButton()
+    {
+        if (Time.time - lastSpawnTime < cooldown) return;
+
+        lastSpawnTime = Time.time;
+        GameObject newButton = Instantiate(newNodeColourPrefab.gameObject, transform);
+        newButton.transform.SetParent(scrollbarContent.transform, false);
     }
 }
