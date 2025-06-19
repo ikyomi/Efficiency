@@ -11,15 +11,16 @@ public class Node : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     [SerializeField] public GameManager gameManager;
+    public int nodeColourPointValue = 0;
 
     public Color targetColour;
 
     private bool isNodePlaced = false;
 
-    public List<Color> inputColourList = new List<Color>();
-    public List<GameObject> inputNodeList = new List<GameObject>();
 
-    public int nodeColourPointValue = 0;
+    [Header("Connected Conveyors")]
+    public List<SpriteRenderer> inputConveyors = new List<SpriteRenderer>();
+    public List<SpriteRenderer> outputConveyors = new List<SpriteRenderer>();
 
     [SerializeField] private float lerpSpeed = 1f;
 
@@ -38,8 +39,17 @@ public class Node : MonoBehaviour
     void Update()
     {
         //change the colour of the node to the target colour
-        targetColour = AverageColours();
+        targetColour = GetInputColour();
         spriteRenderer.color = Color.Lerp(spriteRenderer.color, targetColour, Time.deltaTime * lerpSpeed);
+
+        //Set output colour
+        foreach(SpriteRenderer outputConveyor in outputConveyors)
+        {
+            if (outputConveyor != null)
+            {
+                outputConveyor.color = spriteRenderer.color;
+            }
+        }
     }
 
     public void UpdateNodePoints()
@@ -71,46 +81,45 @@ public class Node : MonoBehaviour
         }
     }
 
-    private Color AverageColours()
+    private Color GetInputColour()
     {
         //if there are no input colours, return the current colour
-        if (inputColourList.Count == 0)
+        if (inputConveyors.Count == 0)
         {
             return spriteRenderer.color;
         }
         //create a new colour to store the average colour
         Color averageColour = new Color(0, 0, 0, 0);
         //add all the input colours together
-        foreach (Color colour in inputColourList)
+
+        foreach (SpriteRenderer sprite in inputConveyors)
         {
-            averageColour += colour;
+            averageColour += sprite.color;
         }
         //divide the total by the number of colours to get the average
-        averageColour /= inputColourList.Count;
+        averageColour /= inputConveyors.Count;
 
         return averageColour;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if the collision is on a start point
+        //if the collision is a conveyor start point
         if (collision.gameObject.CompareTag("StartConveyor"))
         {
-            Debug.Log("Start Conveyor");
-
-            //set the colour of the start point to the colour of the node
-            collision.gameObject.transform.parent.GetComponent<SpriteRenderer>().color = spriteRenderer.color;
+            //add collision game object to list if it isnt in there already
+            if (!outputConveyors.Contains(collision.transform.parent.GetComponent<SpriteRenderer>()))
+            {
+                outputConveyors.Add(collision.transform.parent.GetComponent<SpriteRenderer>());
+            }
         }
 
         if (collision.gameObject.CompareTag("EndConveyor"))
         {
-            Debug.Log(collision.gameObject.tag);
-
-            Color inputColor = collision.transform.parent.GetComponent<SpriteRenderer>().color;
-
-            if(!inputColourList.Contains(inputColor))
+            //if the end point is not the same as the node, add it to the input list
+            if(!inputConveyors.Contains(collision.transform.parent.GetComponent<SpriteRenderer>()))
             {
-                inputColourList.Add(inputColor);
+                inputConveyors.Add(collision.transform.parent.GetComponent<SpriteRenderer>());
             }
         }
     }
@@ -118,27 +127,19 @@ public class Node : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("StartConveyor"))
         {
-            Debug.Log("Start Conveyor Exit");
-            //spriteRenderer.color = Color.white; // Reset the node's color when exiting a start conveyor
-
-            //if the start point is not the same as the node, remove it from the input list
-            if (collision.gameObject != transform.parent.gameObject)
+            //remove output conveyor from the list if it exists
+            if (outputConveyors.Contains(collision.transform.parent.GetComponent<SpriteRenderer>()))
             {
-                Color inputColor = collision.transform.parent.GetComponent<SpriteRenderer>().color;
-                if (inputColourList.Contains(inputColor))
-                {
-                    inputColourList.Remove(inputColor);
-                }
+                outputConveyors.Remove(collision.transform.parent.GetComponent<SpriteRenderer>());
             }
         }
 
         if (collision.gameObject.CompareTag("EndConveyor"))
         {
-            Debug.Log(collision.gameObject.tag);
-            Color inputColor = collision.transform.parent.GetComponent<SpriteRenderer>().color;
-            if (inputColourList.Contains(inputColor))
+            //remove input conveyor from the list if it exists
+            if (inputConveyors.Contains(collision.transform.parent.GetComponent<SpriteRenderer>()))
             {
-                inputColourList.Remove(inputColor);
+                inputConveyors.Remove(collision.transform.parent.GetComponent<SpriteRenderer>());
             }
         }
     }
