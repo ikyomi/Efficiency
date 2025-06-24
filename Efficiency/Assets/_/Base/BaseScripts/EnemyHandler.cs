@@ -11,12 +11,9 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using V_AnimationSystem;
-using CodeMonkey.Utils;
-using CodeMonkey;
 using GridPathfindingSystem;
 
 public class EnemyHandler : MonoBehaviour {

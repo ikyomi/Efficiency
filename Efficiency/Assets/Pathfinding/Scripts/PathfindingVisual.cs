@@ -10,10 +10,6 @@
     --------------------------------------------------
  */
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /*public class PathfindingVisual : MonoBehaviour {
 
     private Grid<PathNode> InitializeGrid;

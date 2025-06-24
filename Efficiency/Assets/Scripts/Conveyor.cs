@@ -47,7 +47,7 @@ public class Conveyor : MonoBehaviour
     private void Awake()
     {
         // Get the SpriteRenderer component from the parent GameObject
-        mySpriteRenderer = GetComponent<SpriteRenderer>();
+        mySpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (mySpriteRenderer == null)
         {
             Debug.LogError("SpriteRenderer not found on parent GameObject.");

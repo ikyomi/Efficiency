@@ -11,12 +11,9 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using V_ObjectSystem;
 using V_AnimationSystem;
-using CodeMonkey;
 using CodeMonkey.Utils;
 
 public class CharacterAimHandler : MonoBehaviour, EnemyHandler.IEnemyTargetable {

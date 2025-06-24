@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.ShaderGraph.Legacy;
 using UnityEngine;
 
 public class Node : MonoBehaviour

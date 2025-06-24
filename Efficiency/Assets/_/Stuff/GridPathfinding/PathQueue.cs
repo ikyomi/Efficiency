@@ -9,9 +9,6 @@
                unitycodemonkey.com
     --------------------------------------------------
  */
- 
-using UnityEngine;
-using System.Collections;
 
 namespace GridPathfindingSystem {
 

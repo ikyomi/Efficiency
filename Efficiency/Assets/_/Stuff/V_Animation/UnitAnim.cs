@@ -1,7 +1,6 @@
 ﻿#define SILENT
 #define OVERWRITE_DEFAULT_ANIMATIONS
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;

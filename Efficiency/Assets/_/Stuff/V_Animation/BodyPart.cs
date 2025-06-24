@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace V_AnimationSystem {
+﻿namespace V_AnimationSystem {
 
     public class BodyPart {
 
